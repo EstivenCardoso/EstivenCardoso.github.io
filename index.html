@@ -21,14 +21,45 @@
 
     /* --- Header y Navegación --- */
     header {
-      background: rgba(0, 0, 0, 0.9);
-      color: #fff;
-      padding: 2rem 0;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(20, 20, 20, 0.95);
+  color: white;
+  z-index: 1000;
+  transition: top 0.4s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Cuando se oculta */
+header.hide {
+  top: -170px; /* Ajusta según el alto del header */
+}
+
+/* Estilo opcional para dar efecto flotante */
+header .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+nav button {
+  margin: 5px;
+  padding: 8px 15px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: transform 0.2s ease, background 0.3s;
+}
+
+nav button:hover {
+  background: #ff4040;
+  transform: scale(1.05);
+}
 
     .container {
       max-width: 1200px;
@@ -523,18 +554,38 @@
 </head>
   <body>
     <header>
-      <div class="container">
-        <h1>🚗 Portal de Seguridad Vial y Criminalística 🚦</h1>
-        <nav>
-          <button onclick="showSection('inicio')" class="active">Inicio</button>
-          <button onclick="showSection('senales')">Señales de Tránsito</button>
-          <button onclick="showSection('estadisticas')">Estadísticas</button>
-          <button onclick="showSection('prevencion')">Prevención</button>
-          <button onclick="showSection('blog')">Blog Criminalística</button>
-          <button onclick="showSection('cuestionario')">Cuestionario</button>
-        </nav>
-      </div>
-    </header>
+  <div class="container">
+    <h1>🚗 Portal de Seguridad Vial y Criminalística 🚦</h1>
+    <nav>
+      <button onclick="showSection('inicio')" class="active">Inicio</button>
+      <button onclick="showSection('senales')">Señales de Tránsito</button>
+      <button onclick="showSection('estadisticas')">Estadísticas</button>
+      <button onclick="showSection('prevencion')">Prevención</button>
+      <button onclick="showSection('blog')">Blog Criminalística</button>
+      <button onclick="showSection('cuestionario')">Cuestionario</button>
+    </nav>
+  </div>
+</header>
+
+<!-- El script va FUERA del header -->
+<script>
+  let lastScroll = 0;
+  const header = document.querySelector("header");
+
+  window.addEventListener("scroll", () => {
+    const currentScroll = window.pageYOffset;
+
+    // Si baja el scroll → ocultar header
+    if (currentScroll > lastScroll && currentScroll > 100) {
+      header.classList.add("hide");
+    } else {
+      // Si sube el scroll → mostrar header
+      header.classList.remove("hide");
+    }
+
+    lastScroll = currentScroll;
+  });
+</script>
 
     <div class="container">
       <div class="content">
@@ -1343,16 +1394,16 @@
 </script>
         </div>
 
-        <!-- CUESTIONARIO COMPLETO (10 preguntas) -->
+        <!-- CUESTIONARIO COMPLETO (20 preguntas) -->
         <div id="cuestionario" class="section">
-          <h2>🧠 Cuestionario Educativo (10 preguntas)</h2>
+          <h2>🧠 Cuestionario Educativo (20 preguntas)</h2>
           <p class="tiny" style="margin: 0.5rem 0 1.2rem 0">
-            Responde las 10 preguntas y obtén una valoración al final.
+            Responde las 20 preguntas y obtén una valoración al final.
           </p>
 
           <div class="quiz-box">
             <div id="q-progress" class="tiny" style="margin-bottom: 0.6rem">
-              Pregunta <span id="currentIndex">1</span> / 10
+              Pregunta <span id="currentIndex">1</span> / 20
             </div>
             <div
               id="q-text"
@@ -1754,173 +1805,235 @@ options: {
       }
 
       // ---------- CUESTIONARIO DE 10 PREGUNTAS ----------
-      const QUIZ_10 = [
-        {
-          q: "¿Qué significa la señal 'PARE'?",
-          opts: [
-            "Continuar con precaución",
-            "Detenerse completamente",
-            "Avanzar sólo si no vienen vehículos",
-          ],
-          a: 1,
-        },
-        {
-          q: "¿Cuál es la conducta más peligrosa al conducir?",
-          opts: [
-            "Usar manos libres",
-            "Distraerse con el celular",
-            "Mantener distancia",
-          ],
-          a: 1,
-        },
-        {
-          q: "¿Qué reduce la gravedad de lesiones en choques?",
-          opts: ["Usar casco (motos)", "Conducir rápido", "Abrir puertas"],
-          a: 0,
-        },
-        {
-          q: "¿Qué debes hacer al ver un semáforo en amarillo?",
-          opts: [
-            "Acelerar",
-            "Detenerse si puedes hacerlo con seguridad",
-            "Ignorarlo",
-          ],
-          a: 1,
-        },
-        {
-          q: "¿La distancia de seguimiento depende de...?",
-          opts: [
-            "La marca del vehículo",
-            "La velocidad y condiciones de la vía",
-            "El color del auto",
-          ],
-          a: 1,
-        },
-        {
-          q: "¿Qué es lo primero al llegar a una escena de accidente (si eres testigo)?",
-          opts: [
-            "Mover a las víctimas sin evaluar",
-            "Llamar a emergencias y asegurar la escena",
-            "Robar evidencias",
-          ],
-          a: 1,
-        },
-        {
-          q: "¿Qué ayuda a mejorar la visibilidad nocturna del peatón?",
-          opts: ["Ropa oscura", "Ropa reflectiva", "Usar auriculares"],
-          a: 1,
-        },
-        {
-          q: "¿Cuál es uno de los mayores factores de siniestros en motos?",
-          opts: ["Casco puesto", "Exceso de velocidad", "Neumáticos nuevos"],
-          a: 1,
-        },
-        {
-          q: "¿Por qué es importante el croquis en la investigación?",
-          opts: [
-            "Porque decora el expediente",
-            "Porque registra posiciones y evidencias a escala",
-            "Porque evita multas",
-          ],
-          a: 1,
-        },
-        {
-          q: "¿Qué documento técnico puede registrar datos de velocidad y frenado del vehículo?",
-          opts: [
-            "Factura de comprador",
-            "Caja negra / registrador de datos",
-            "Libreta de mantenimiento",
-          ],
-          a: 1,
-        },
-      ];
-      let qIndex = 0,
-        qScore = 0;
+      const QUIZ_20 = [
+    // --- SEGURIDAD VIAL ---
+    {
+      q: "¿Qué significa la señal 'PARE'?",
+      opts: [
+        "Continuar con precaución",
+        "Detenerse completamente",
+        "Avanzar sólo si no vienen vehículos",
+      ],
+      a: 1,
+    },
+    {
+      q: "¿Cuál es la conducta más peligrosa al conducir?",
+      opts: ["Usar manos libres", "Distraerse con el celular", "Mantener distancia"],
+      a: 1,
+    },
+    {
+      q: "¿Qué reduce la gravedad de lesiones en choques?",
+      opts: ["Usar casco (motos)", "Conducir rápido", "Abrir puertas"],
+      a: 0,
+    },
+    {
+      q: "¿Qué debes hacer al ver un semáforo en amarillo?",
+      opts: ["Acelerar", "Detenerse si puedes hacerlo con seguridad", "Ignorarlo"],
+      a: 1,
+    },
+    {
+      q: "¿La distancia de seguimiento depende de...?",
+      opts: ["La marca del vehículo", "La velocidad y condiciones de la vía", "El color del auto"],
+      a: 1,
+    },
+    {
+      q: "¿Qué es lo primero al llegar a una escena de accidente (si eres testigo)?",
+      opts: [
+        "Mover a las víctimas sin evaluar",
+        "Llamar a emergencias y asegurar la escena",
+        "Robar evidencias",
+      ],
+      a: 1,
+    },
+    {
+      q: "¿Qué ayuda a mejorar la visibilidad nocturna del peatón?",
+      opts: ["Ropa oscura", "Ropa reflectiva", "Usar auriculares"],
+      a: 1,
+    },
+    {
+      q: "¿Cuál es uno de los mayores factores de siniestros en motos?",
+      opts: ["Casco puesto", "Exceso de velocidad", "Neumáticos nuevos"],
+      a: 1,
+    },
+    {
+      q: "¿Por qué es importante el croquis en la investigación?",
+      opts: [
+        "Porque decora el expediente",
+        "Porque registra posiciones y evidencias a escala",
+        "Porque evita multas",
+      ],
+      a: 1,
+    },
+    {
+      q: "¿Qué documento técnico puede registrar datos de velocidad y frenado del vehículo?",
+      opts: [
+        "Factura de comprador",
+        "Caja negra / registrador de datos",
+        "Libreta de mantenimiento",
+      ],
+      a: 1,
+    },
 
-      function initMiniQuiz() {
-        qIndex = 0;
-        qScore = 0;
-        document.getElementById("finalResult").style.display = "none";
-        document.getElementById("restartBtn").style.display = "none";
-        document.getElementById("nextBtn").style.display = "inline-block";
-        showQuestion();
-        document.getElementById("nextBtn").onclick = handleNext;
-        document.getElementById("restartBtn").onclick = () => {
-          initMiniQuiz();
-        };
-      }
+    // --- CRIMINALÍSTICA VIAL ---
+    {
+      q: "¿Cuál es el objetivo principal de la criminalística vial?",
+      opts: [
+        "Determinar la causa y responsables del accidente",
+        "Buscar testigos aleatorios",
+        "Reparar los vehículos accidentados",
+      ],
+      a: 0,
+    },
+    {
+      q: "¿Qué se debe hacer antes de alterar la escena del accidente?",
+      opts: [
+        "Tomar fotografías y mediciones",
+        "Mover los cuerpos para despejar la vía",
+        "Recoger piezas sin registrar",
+      ],
+      a: 0,
+    },
+    {
+      q: "¿Qué herramienta permite calcular distancias y ángulos en la escena?",
+      opts: ["Microscopio", "Estación total o cinta métrica", "Linterna"],
+      a: 1,
+    },
+    {
+      q: "¿Qué debe contener un informe pericial vial?",
+      opts: [
+        "Opiniones personales del perito",
+        "Datos técnicos, croquis y conclusiones objetivas",
+        "Publicidad de aseguradoras",
+      ],
+      a: 1,
+    },
+    {
+      q: "¿Quién autoriza el levantamiento de un cadáver en un accidente vial?",
+      opts: ["El perito vial", "La autoridad judicial o fiscalía", "Un testigo del hecho"],
+      a: 1,
+    },
+    {
+      q: "¿Cuál es la primera acción del perito al llegar a la escena del siniestro?",
+      opts: [
+        "Asegurar el área y evitar contaminación de evidencia",
+        "Buscar culpables entre los presentes",
+        "Lavar los restos del vehículo",
+      ],
+      a: 0,
+    },
+    {
+      q: "¿Qué se debe registrar en el acta de levantamiento?",
+      opts: [
+        "El color del vehículo únicamente",
+        "El estado, posición y lesiones de la víctima",
+        "Solo la fecha y la hora",
+      ],
+      a: 1,
+    },
+    {
+      q: "¿Qué disciplina apoya a la criminalística para determinar causa de muerte?",
+      opts: ["Medicina legal", "Geología", "Topografía"],
+      a: 0,
+    },
+    {
+      q: "¿Por qué es importante la cadena de custodia?",
+      opts: [
+        "Garantiza que las evidencias no sean manipuladas o alteradas",
+        "Sirve para decorar el expediente",
+        "Evita que los testigos se vayan",
+      ],
+      a: 0,
+    },
+    {
+      q: "¿Qué valores deben guiar al perito vial en su labor?",
+      opts: ["Rapidez y favoritismo", "Ética, objetividad y rigor científico", "Secreto y silencio"],
+      a: 1,
+    },
+  ];
 
-      function showQuestion() {
-        const cur = QUIZ_10[qIndex];
-        document.getElementById("currentIndex").textContent = qIndex + 1;
-        document.getElementById("q-text").textContent = cur.q;
-        const opts = document.getElementById("q-options");
-        opts.innerHTML = "";
-        cur.opts.forEach((o, i) => {
-          const btn = document.createElement("button");
-          btn.className = "op-btn";
-          btn.textContent = o;
-          btn.onclick = () => selectAnswer(i, btn);
-          opts.appendChild(btn);
-        });
-      }
+  let qIndex = 0,
+    qScore = 0;
 
-      function selectAnswer(i, btn) {
-        const cur = QUIZ_10[qIndex];
-        const btns = document.querySelectorAll("#q-options .op-btn");
-        btns.forEach((b) => (b.disabled = true));
-        if (i === cur.a) {
-          btn.classList.add("correct");
-          qScore++;
-        } else {
-          btn.classList.add("wrong");
-          // mostrar correcta
-          btns[cur.a].classList.add("correct");
-        }
-      }
+  function initMiniQuiz() {
+    qIndex = 0;
+    qScore = 0;
+    document.getElementById("finalResult").style.display = "none";
+    document.getElementById("restartBtn").style.display = "none";
+    document.getElementById("nextBtn").style.display = "inline-block";
+    showQuestion();
+    document.getElementById("nextBtn").onclick = handleNext;
+    document.getElementById("restartBtn").onclick = () => {
+      initMiniQuiz();
+    };
+  }
 
-      function handleNext() {
-        // si no se ha seleccionado ninguna respuesta, advertir
-        const btns = document.querySelectorAll("#q-options .op-btn");
-        const anyDisabled = Array.from(btns).some((b) => b.disabled);
-        if (!anyDisabled) {
-          alert("Selecciona una opción antes de continuar.");
-          return;
-        }
-        if (qIndex < QUIZ_10.length - 1) {
-          qIndex++;
-          showQuestion();
-        } else {
-          showQuizResult();
-        }
-      }
+  function showQuestion() {
+    const cur = QUIZ_20[qIndex];
+    document.getElementById("currentIndex").textContent = qIndex + 1;
+    document.getElementById("q-text").textContent = cur.q;
+    const opts = document.getElementById("q-options");
+    opts.innerHTML = "";
+    cur.opts.forEach((o, i) => {
+      const btn = document.createElement("button");
+      btn.className = "op-btn";
+      btn.textContent = o;
+      btn.onclick = () => selectAnswer(i, btn);
+      opts.appendChild(btn);
+    });
+  }
 
-      function showQuizResult() {
-        const area = document.getElementById("finalResult");
-        area.style.display = "block";
-        area.innerHTML = `<div style="padding:1rem;background:#fff;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.08)">
-        <div style="font-weight:800;font-size:1.1rem">Resultado: ${qScore} / ${
-          QUIZ_10.length
-        }</div>
-        <div style="margin-top:.6rem">${getMessageForScore(qScore)}</div>
-        <div style="margin-top:.6rem"><span class="score-badge">${Math.round(
-          (qScore / QUIZ_10.length) * 100
-        )}%</span></div>
-      </div>`;
-        document.getElementById("nextBtn").style.display = "none";
-        document.getElementById("restartBtn").style.display = "inline-block";
-      }
+  function selectAnswer(i, btn) {
+    const cur = QUIZ_20[qIndex];
+    const btns = document.querySelectorAll("#q-options .op-btn");
+    btns.forEach((b) => (b.disabled = true));
+    if (i === cur.a) {
+      btn.classList.add("correct");
+      qScore++;
+    } else {
+      btn.classList.add("wrong");
+      btns[cur.a].classList.add("correct");
+    }
+  }
 
-      function getMessageForScore(score) {
-        const pct = score / QUIZ_10.length;
-        if (pct === 1)
-          return "Excelente — domina las normas y la seguridad vial. ¡Sigue así!";
-        if (pct >= 0.8)
-          return "Muy bien — conoces la mayoría de las buenas prácticas. Repasa lo justo.";
-        if (pct >= 0.5)
-          return "Bien — tienes conocimientos básicos, pero hay puntos por mejorar.";
-        return "Necesitas repasar — la seguridad vial es vital. Estudia las normas y prácticas recomendadas.";
-      }
+  function handleNext() {
+    const btns = document.querySelectorAll("#q-options .op-btn");
+    const anyDisabled = Array.from(btns).some((b) => b.disabled);
+    if (!anyDisabled) {
+      alert("Selecciona una opción antes de continuar.");
+      return;
+    }
+    if (qIndex < QUIZ_20.length - 1) {
+      qIndex++;
+      showQuestion();
+    } else {
+      showQuizResult();
+    }
+  }
+
+  function showQuizResult() {
+    const area = document.getElementById("finalResult");
+    area.style.display = "block";
+    area.innerHTML = `<div style="padding:1rem;background:#fff;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.08)">
+      <div style="font-weight:800;font-size:1.1rem">Resultado: ${qScore} / ${QUIZ_20.length}</div>
+      <div style="margin-top:.6rem">${getMessageForScore(qScore)}</div>
+      <div style="margin-top:.6rem"><span class="score-badge">${Math.round(
+        (qScore / QUIZ_20.length) * 100
+      )}%</span></div>
+    </div>`;
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("restartBtn").style.display = "inline-block";
+  }
+
+  function getMessageForScore(score) {
+    const pct = score / QUIZ_20.length;
+    if (pct === 1)
+      return "Excelente — Dominas la seguridad y criminalística vial. ¡Sigue así!";
+    if (pct >= 0.8)
+      return "Muy bien — Conoces gran parte de los conceptos. Repasa algunos detalles.";
+    if (pct >= 0.5)
+      return "Bien — Buen desempeño, pero hay puntos que puedes reforzar.";
+    return "Necesitas repasar — La prevención y el conocimiento técnico son clave para salvar vidas.";
+  }
     </script>
   </body>
 </html>
