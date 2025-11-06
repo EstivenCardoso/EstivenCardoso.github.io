@@ -20,60 +20,16 @@
     }
 
     /* --- Header y Navegación --- */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: rgba(20, 20, 20, 0.95);
-  color: white;
-  z-index: 1000;
-  transition: top 0.4s ease-in-out;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px); /* opcional: da un efecto moderno */
-}
-
-/* Ocultar cuando se baja */
-header.hide {
-  top: -180px;
-}
-
-/* Ajuste para móviles */
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 1.2rem;
-    transform: translateY(-180%);
-  }
-
-  header nav button {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-  }
-}
-
-/* Estilo opcional para dar efecto flotante */
-header .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px;
-}
-
-nav button {
-  margin: 5px;
-  padding: 8px 15px;
-  background: #ff6b6b;
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-weight: 600;
-  transition: transform 0.2s ease, background 0.3s;
-}
-
-nav button:hover {
-  background: #ff4040;
-  transform: scale(1.05);
-}
+ /* --- Header y Navegación --- */
+    header {
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 2rem 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
     .container {
       max-width: 1200px;
@@ -117,7 +73,6 @@ nav button:hover {
     nav button.active {
       background: #4caf50;
     }
-
     /* --- Contenido Principal --- */
     .content {
       background: white;
@@ -581,25 +536,24 @@ nav button:hover {
   </div>
 </header>
 
-<!-- El script va FUERA del header -->
 <script>
+  // Controla la visibilidad del header al hacer scroll
   let lastScroll = 0;
   const header = document.querySelector("header");
 
   window.addEventListener("scroll", () => {
     const currentScroll = window.pageYOffset;
 
-    // Si baja el scroll → ocultar header
     if (currentScroll > lastScroll && currentScroll > 100) {
       header.classList.add("hide");
     } else {
-      // Si sube el scroll → mostrar header
       header.classList.remove("hide");
     }
 
     lastScroll = currentScroll;
   });
 </script>
+
 
     <div class="container">
       <div class="content">
